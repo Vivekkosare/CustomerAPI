@@ -1,7 +1,9 @@
 ﻿using CustomerAPI.Entities;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using System;
 using System.Collections.Generic;
+using System.Numerics;
 using System.Text;
 
 namespace CustomerAPI.DBContexts
@@ -33,6 +35,15 @@ namespace CustomerAPI.DBContexts
                 new PhoneNumber { CountryId = Guid.Parse("ba2dc307-32bf-4d24-8cd2-45f070975889"), Phone = "60555269", PhoneId = Guid.Parse("bdbcc5c5-1b8f-45b1-be22-6f6bad98308e"), CustomerId = Guid.Parse("21d937d1-f020-4e4f-9f26-add9801b6e75") },
                 new PhoneNumber { CountryId = Guid.Parse("0f72123d-6095-490e-a051-6bb7fbcbc010"), Phone = "95552843", PhoneId = Guid.Parse("1c8f1f5d-9d68-4019-98e3-87a9c5b9a55b"), CustomerId = Guid.Parse("5cee819a-f78d-49a9-866e-b69aba44c4f4") },
                 new PhoneNumber { CountryId = Guid.Parse("01d942ed-522e-4e5f-908b-cae029c820d7"), Phone = "5005557352", PhoneId = Guid.Parse("173c9951-a374-4ba4-b5fe-29a894e48279"), CustomerId = Guid.Parse("fbf6dc01-93f9-4772-891f-46e5a79d6e2a") });
+
+            var converter = new ValueConverter<BigInteger, long>(
+                                                    model => (long)model,
+                                                    provider => new BigInteger(provider));
+
+            modelBuilder
+                .Entity<Customer>()
+                .Property(e => e.PersonalNumber)
+                .HasConversion(converter);
 
             modelBuilder.Entity<Customer>().HasData(new Customer { CustomerId = Guid.Parse("e2c46906-2ea4-4672-a81f-bd69890c9b16"), PersonalNumber = 199205251045, Email = "user1@domain.com" },
                 new Customer { CustomerId = Guid.Parse("21d937d1-f020-4e4f-9f26-add9801b6e75"), PersonalNumber = 199307121428, Email = "user2@domain.com", },
