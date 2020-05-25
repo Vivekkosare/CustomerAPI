@@ -13,6 +13,13 @@ namespace CustomerAPI.Entities
         [ForeignKey("CountryId")]
         public Country Country { get; set; }
         public Guid CountryId { get; set; }
+
+        [Required]
+        [MinLength(8, ErrorMessage = "Minimum 8 digits should be entered")]
+        [MaxLength(15, ErrorMessage = "Maximum 15 digits should be entered")]
         public string Phone { get; set; }
+
+        [ForeignKey("CustomerId")]
+        public Guid CustomerId { get; set; }
     }
 }
