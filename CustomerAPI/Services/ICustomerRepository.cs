@@ -2,14 +2,15 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace CustomerAPI.Services
 {
    public interface ICustomerRepository
     {
-        IEnumerable<Customer> GetCustomers();
+        Task<IEnumerable<Customer>> GetCustomers();
 
-        Customer GetCustomer(string personalNumber);
+        Task<Customer> GetCustomer(Guid customerId);
 
         void CreateCustomer(Customer customer);
 
