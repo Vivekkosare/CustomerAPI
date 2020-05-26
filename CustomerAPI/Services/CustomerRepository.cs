@@ -46,33 +46,15 @@ namespace CustomerAPI.Services
         {
             var customers = (from cust in _context.Customers
                              join address in _context.Addresses on cust.CustomerId equals address.CustomerId
-                             join country in _context.Countries on address.CountryId equals country.CountryId
-                             join phone in _context.PhoneNumbers on cust.CustomerId equals phone.CustomerId
                              select new Customer
                              {
                                  Address = new Address
                                  {
                                      ZipCode = address.ZipCode,
-                                     Country = new Country
-                                     {
-                                         CountryName = country.CountryName,
-                                         CountryCode = country.CountryCode,
-                                         CountryId = country.CountryId
-                                     },
+                                     Country = address.Country,
                                      AddressId = address.AddressId
                                  },
-                                 PhoneNumber = new PhoneNumber
-                                 {
-                                     PhoneId = phone.PhoneId,
-                                     Phone = phone.Phone,
-                                     Country = new Country
-                                     {
-                                         CountryName = country.CountryName,
-                                         CountryCode = country.CountryCode,
-                                         CountryId = country.CountryId
-                                     },
-                                     CountryId = country.CountryId
-                                 },
+                                 PhoneNumber = cust.PhoneNumber,
                                  CustomerId = cust.CustomerId,
                                  Email = cust.Email,
                                  PersonalNumber = cust.PersonalNumber

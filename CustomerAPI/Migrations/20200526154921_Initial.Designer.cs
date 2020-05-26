@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CustomerAPI.Migrations
 {
     [DbContext(typeof(CustomerContext))]
-    [Migration("20200526125125_Initial")]
+    [Migration("20200526154921_Initial")]
     partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -27,8 +27,8 @@ namespace CustomerAPI.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<Guid>("CountryId")
-                        .HasColumnType("uniqueidentifier");
+                    b.Property<string>("Country")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<Guid>("CustomerId")
                         .HasColumnType("uniqueidentifier");
@@ -39,8 +39,6 @@ namespace CustomerAPI.Migrations
 
                     b.HasKey("AddressId");
 
-                    b.HasIndex("CountryId");
-
                     b.HasIndex("CustomerId")
                         .IsUnique();
 
@@ -50,28 +48,28 @@ namespace CustomerAPI.Migrations
                         new
                         {
                             AddressId = new Guid("78cebe6c-6dac-403e-82bd-43f3142ea805"),
-                            CountryId = new Guid("991e0c2f-a768-40b9-9eaa-b7c31eb3fcc4"),
+                            Country = "Sweden",
                             CustomerId = new Guid("e2c46906-2ea4-4672-a81f-bd69890c9b16"),
                             ZipCode = 15132
                         },
                         new
                         {
                             AddressId = new Guid("a02b03b7-36cb-4839-911c-f782bb3009e9"),
-                            CountryId = new Guid("ba2dc307-32bf-4d24-8cd2-45f070975889"),
+                            Country = "Denmark",
                             CustomerId = new Guid("21d937d1-f020-4e4f-9f26-add9801b6e75"),
                             ZipCode = 4268
                         },
                         new
                         {
                             AddressId = new Guid("5c3ac12f-ec83-449e-a37e-de7442cde7da"),
-                            CountryId = new Guid("0f72123d-6095-490e-a051-6bb7fbcbc010"),
+                            Country = "Norway",
                             CustomerId = new Guid("5cee819a-f78d-49a9-866e-b69aba44c4f4"),
                             ZipCode = 30415
                         },
                         new
                         {
                             AddressId = new Guid("b84178a0-b0ff-4721-96cc-5d271d93f6b9"),
-                            CountryId = new Guid("01d942ed-522e-4e5f-908b-cae029c820d7"),
+                            Country = "Finland",
                             CustomerId = new Guid("fbf6dc01-93f9-4772-891f-46e5a79d6e2a"),
                             ZipCode = 55603
                         });
@@ -135,6 +133,11 @@ namespace CustomerAPI.Migrations
                         .HasColumnType("nvarchar(12)")
                         .HasMaxLength(12);
 
+                    b.Property<string>("PhoneNumber")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(15)")
+                        .HasMaxLength(15);
+
                     b.HasKey("CustomerId");
 
                     b.ToTable("Customers");
@@ -144,111 +147,37 @@ namespace CustomerAPI.Migrations
                         {
                             CustomerId = new Guid("e2c46906-2ea4-4672-a81f-bd69890c9b16"),
                             Email = "user1@domain.com",
-                            PersonalNumber = "199205251045"
+                            PersonalNumber = "199205251045",
+                            PhoneNumber = "+467455535"
                         },
                         new
                         {
                             CustomerId = new Guid("21d937d1-f020-4e4f-9f26-add9801b6e75"),
                             Email = "user2@domain.com",
-                            PersonalNumber = "199307121428"
+                            PersonalNumber = "199307121428",
+                            PhoneNumber = "+4560555269"
                         },
                         new
                         {
                             CustomerId = new Guid("5cee819a-f78d-49a9-866e-b69aba44c4f4"),
                             Email = "user3@domain.com",
-                            PersonalNumber = "198904208493"
+                            PersonalNumber = "198904208493",
+                            PhoneNumber = "+4795552843"
                         },
                         new
                         {
                             CustomerId = new Guid("fbf6dc01-93f9-4772-891f-46e5a79d6e2a"),
                             Email = "user4@domain.com",
-                            PersonalNumber = "198602182748"
-                        });
-                });
-
-            modelBuilder.Entity("CustomerAPI.Entities.PhoneNumber", b =>
-                {
-                    b.Property<Guid>("PhoneId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<Guid>("CountryId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<Guid>("CustomerId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<string>("Phone")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(15)")
-                        .HasMaxLength(15);
-
-                    b.HasKey("PhoneId");
-
-                    b.HasIndex("CountryId");
-
-                    b.HasIndex("CustomerId")
-                        .IsUnique();
-
-                    b.ToTable("PhoneNumbers");
-
-                    b.HasData(
-                        new
-                        {
-                            PhoneId = new Guid("540c9172-2391-4990-8503-985083ae34e8"),
-                            CountryId = new Guid("991e0c2f-a768-40b9-9eaa-b7c31eb3fcc4"),
-                            CustomerId = new Guid("e2c46906-2ea4-4672-a81f-bd69890c9b16"),
-                            Phone = "7455535"
-                        },
-                        new
-                        {
-                            PhoneId = new Guid("bdbcc5c5-1b8f-45b1-be22-6f6bad98308e"),
-                            CountryId = new Guid("ba2dc307-32bf-4d24-8cd2-45f070975889"),
-                            CustomerId = new Guid("21d937d1-f020-4e4f-9f26-add9801b6e75"),
-                            Phone = "60555269"
-                        },
-                        new
-                        {
-                            PhoneId = new Guid("1c8f1f5d-9d68-4019-98e3-87a9c5b9a55b"),
-                            CountryId = new Guid("0f72123d-6095-490e-a051-6bb7fbcbc010"),
-                            CustomerId = new Guid("5cee819a-f78d-49a9-866e-b69aba44c4f4"),
-                            Phone = "95552843"
-                        },
-                        new
-                        {
-                            PhoneId = new Guid("173c9951-a374-4ba4-b5fe-29a894e48279"),
-                            CountryId = new Guid("01d942ed-522e-4e5f-908b-cae029c820d7"),
-                            CustomerId = new Guid("fbf6dc01-93f9-4772-891f-46e5a79d6e2a"),
-                            Phone = "5005557352"
+                            PersonalNumber = "198602182748",
+                            PhoneNumber = "+3585005557352"
                         });
                 });
 
             modelBuilder.Entity("CustomerAPI.Entities.Address", b =>
                 {
-                    b.HasOne("CustomerAPI.Entities.Country", "Country")
-                        .WithMany()
-                        .HasForeignKey("CountryId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.HasOne("CustomerAPI.Entities.Customer", null)
                         .WithOne("Address")
                         .HasForeignKey("CustomerAPI.Entities.Address", "CustomerId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
-            modelBuilder.Entity("CustomerAPI.Entities.PhoneNumber", b =>
-                {
-                    b.HasOne("CustomerAPI.Entities.Country", "Country")
-                        .WithMany()
-                        .HasForeignKey("CountryId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("CustomerAPI.Entities.Customer", null)
-                        .WithOne("PhoneNumber")
-                        .HasForeignKey("CustomerAPI.Entities.PhoneNumber", "CustomerId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });

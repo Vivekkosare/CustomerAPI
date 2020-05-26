@@ -1,4 +1,5 @@
-﻿using CustomerAPI.Models;
+﻿using AutoMapper;
+using CustomerAPI.Models;
 using CustomerAPI.Services;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -13,37 +14,18 @@ namespace CustomerAPI.Controllers
     public class CustomerController : ControllerBase
     {
         private readonly ICustomerRepository _customerRepository;
-        public CustomerController(ICustomerRepository customerRepository)
+        private readonly IMapper _mapper;
+        public CustomerController(ICustomerRepository customerRepository, IMapper mapper)
         {
             _customerRepository = customerRepository ?? throw new ArgumentNullException(nameof(customerRepository));
+            _mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
         }
 
         [HttpGet]
         public IActionResult GetCustomers()
         {
             var customers = _customerRepository.GetCustomers();
-
-            var customerDto = new List<CustomerDto>();
-            foreach (var item in customers)
-            {
-                customerDto.Add(new CustomerDto
-                {
-                    PersonalNumber = item.PersonalNumber,
-                    Email = item.Email,
-                    CustomerId = item.CustomerId,
-                    Address = new AddressDto
-                    {
-                        ZipCode = item.Address.ZipCode,
-                        Country = item.Address.Country.CountryName
-                    },
-                    PhoneNumber = new PhoneNumberDto
-                    {
-                        countryCode = item.PhoneNumber.Country.CountryCode,
-                        phone = item.PhoneNumber.Phone
-                    }
-                });
-            }
-            return Ok(customerDto);
+            return Ok(_mapper.Map<IEnumerable<CustomerDto>>(customers));
         }
     }
 }
