@@ -1,13 +1,16 @@
 ﻿using CustomerAPI.DBContexts;
 using CustomerAPI.Entities;
+using CustomerAPI.Models;
+using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Cryptography.X509Certificates;
 using System.Text;
 
 namespace CustomerAPI.Services
 {
-    class CustomerRepository : ICustomerRepository
+    public class CustomerRepository : ICustomerRepository
     {
         private readonly CustomerContext _context;
         public CustomerRepository(CustomerContext context)
@@ -31,7 +34,7 @@ namespace CustomerAPI.Services
             _context.SaveChanges();
         }
 
-        public Customer GetCustomer(long personalNumber)
+        public Customer GetCustomer(string personalNumber)
         {
             if (personalNumber.ToString().Length < 10 || personalNumber.ToString().Length > 12)
                 throw new InvalidOperationException(nameof(personalNumber));
@@ -41,7 +44,41 @@ namespace CustomerAPI.Services
 
         public IEnumerable<Customer> GetCustomers()
         {
-            return _context.Customers;
+            var customers = (from cust in _context.Customers
+                             join address in _context.Addresses on cust.CustomerId equals address.CustomerId
+                             join country in _context.Countries on address.CountryId equals country.CountryId
+                             join phone in _context.PhoneNumbers on cust.CustomerId equals phone.CustomerId
+                             select new Customer
+                             {
+                                 Address = new Address
+                                 {
+                                     ZipCode = address.ZipCode,
+                                     Country = new Country
+                                     {
+                                         CountryName = country.CountryName,
+                                         CountryCode = country.CountryCode,
+                                         CountryId = country.CountryId
+                                     },
+                                     AddressId = address.AddressId
+                                 },
+                                 PhoneNumber = new PhoneNumber
+                                 {
+                                     PhoneId = phone.PhoneId,
+                                     Phone = phone.Phone,
+                                     Country = new Country
+                                     {
+                                         CountryName = country.CountryName,
+                                         CountryCode = country.CountryCode,
+                                         CountryId = country.CountryId
+                                     },
+                                     CountryId = country.CountryId
+                                 },
+                                 CustomerId = cust.CustomerId,
+                                 Email = cust.Email,
+                                 PersonalNumber = cust.PersonalNumber
+                             });
+
+            return customers.ToList() ?? throw new ArgumentNullException(nameof(customers));
         }
 
         public void UpdateCustomer(Customer customer)

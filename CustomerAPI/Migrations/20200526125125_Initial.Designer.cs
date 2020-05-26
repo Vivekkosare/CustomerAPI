@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CustomerAPI.Migrations
 {
     [DbContext(typeof(CustomerContext))]
-    [Migration("20200525233206_Initial")]
+    [Migration("20200526125125_Initial")]
     partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -40,6 +40,9 @@ namespace CustomerAPI.Migrations
                     b.HasKey("AddressId");
 
                     b.HasIndex("CountryId");
+
+                    b.HasIndex("CustomerId")
+                        .IsUnique();
 
                     b.ToTable("Addresses");
 
@@ -127,8 +130,9 @@ namespace CustomerAPI.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<long>("PersonalNumber")
-                        .HasColumnType("bigint")
+                    b.Property<string>("PersonalNumber")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(12)")
                         .HasMaxLength(12);
 
                     b.HasKey("CustomerId");
@@ -140,25 +144,25 @@ namespace CustomerAPI.Migrations
                         {
                             CustomerId = new Guid("e2c46906-2ea4-4672-a81f-bd69890c9b16"),
                             Email = "user1@domain.com",
-                            PersonalNumber = 199205251045L
+                            PersonalNumber = "199205251045"
                         },
                         new
                         {
                             CustomerId = new Guid("21d937d1-f020-4e4f-9f26-add9801b6e75"),
                             Email = "user2@domain.com",
-                            PersonalNumber = 199307121428L
+                            PersonalNumber = "199307121428"
                         },
                         new
                         {
                             CustomerId = new Guid("5cee819a-f78d-49a9-866e-b69aba44c4f4"),
                             Email = "user3@domain.com",
-                            PersonalNumber = 198904208493L
+                            PersonalNumber = "198904208493"
                         },
                         new
                         {
                             CustomerId = new Guid("fbf6dc01-93f9-4772-891f-46e5a79d6e2a"),
                             Email = "user4@domain.com",
-                            PersonalNumber = 198602182748L
+                            PersonalNumber = "198602182748"
                         });
                 });
 
@@ -182,6 +186,9 @@ namespace CustomerAPI.Migrations
                     b.HasKey("PhoneId");
 
                     b.HasIndex("CountryId");
+
+                    b.HasIndex("CustomerId")
+                        .IsUnique();
 
                     b.ToTable("PhoneNumbers");
 
@@ -223,6 +230,12 @@ namespace CustomerAPI.Migrations
                         .HasForeignKey("CountryId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.HasOne("CustomerAPI.Entities.Customer", null)
+                        .WithOne("Address")
+                        .HasForeignKey("CustomerAPI.Entities.Address", "CustomerId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("CustomerAPI.Entities.PhoneNumber", b =>
@@ -230,6 +243,12 @@ namespace CustomerAPI.Migrations
                     b.HasOne("CustomerAPI.Entities.Country", "Country")
                         .WithMany()
                         .HasForeignKey("CountryId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("CustomerAPI.Entities.Customer", null)
+                        .WithOne("PhoneNumber")
+                        .HasForeignKey("CustomerAPI.Entities.PhoneNumber", "CustomerId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });

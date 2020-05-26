@@ -5,7 +5,7 @@ using System.Text;
 
 namespace CustomerAPI.Entities
 {
-    class Country
+   public class Country
     {
         [Key]
         public Guid CountryId { get; set; }

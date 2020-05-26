@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using AutoMapper;
 using CustomerAPI.DBContexts;
 using CustomerAPI.Services;
 using Microsoft.AspNetCore.Builder;
@@ -27,9 +28,15 @@ namespace CustomerAPI
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddControllers();
+            services.AddControllers(action =>
+            {
+                action.ReturnHttpNotAcceptable = true;
+            }).AddXmlDataContractSerializerFormatters();
+
+            services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
             services.AddScoped<ICustomerRepository, CustomerRepository>();
-            services.AddDbContext<CustomerContext>(options => {
+            services.AddDbContext<CustomerContext>(options =>
+            {
                 options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection"));
             });
         }

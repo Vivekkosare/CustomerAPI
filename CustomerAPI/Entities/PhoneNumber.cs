@@ -6,7 +6,7 @@ using System.Text;
 
 namespace CustomerAPI.Entities
 {
-    class PhoneNumber
+    public class PhoneNumber
     {
         [Key]
         public Guid PhoneId { get; set; }

@@ -5,11 +5,11 @@ using System.Text;
 
 namespace CustomerAPI.Services
 {
-    interface ICustomerRepository
+   public interface ICustomerRepository
     {
         IEnumerable<Customer> GetCustomers();
 
-        Customer GetCustomer(long personalNumber);
+        Customer GetCustomer(string personalNumber);
 
         void CreateCustomer(Customer customer);
 

@@ -25,7 +25,7 @@ namespace CustomerAPI.Migrations
                 columns: table => new
                 {
                     CustomerId = table.Column<Guid>(nullable: false),
-                    PersonalNumber = table.Column<long>(maxLength: 12, nullable: false),
+                    PersonalNumber = table.Column<string>(maxLength: 12, nullable: false),
                     Email = table.Column<string>(nullable: false)
                 },
                 constraints: table =>
@@ -51,6 +51,12 @@ namespace CustomerAPI.Migrations
                         principalTable: "Countries",
                         principalColumn: "CountryId",
                         onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Addresses_Customers_CustomerId",
+                        column: x => x.CustomerId,
+                        principalTable: "Customers",
+                        principalColumn: "CustomerId",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -71,6 +77,12 @@ namespace CustomerAPI.Migrations
                         principalTable: "Countries",
                         principalColumn: "CountryId",
                         onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_PhoneNumbers_Customers_CustomerId",
+                        column: x => x.CustomerId,
+                        principalTable: "Customers",
+                        principalColumn: "CustomerId",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.InsertData(
@@ -89,10 +101,10 @@ namespace CustomerAPI.Migrations
                 columns: new[] { "CustomerId", "Email", "PersonalNumber" },
                 values: new object[,]
                 {
-                    { new Guid("e2c46906-2ea4-4672-a81f-bd69890c9b16"), "user1@domain.com", 199205251045L },
-                    { new Guid("21d937d1-f020-4e4f-9f26-add9801b6e75"), "user2@domain.com", 199307121428L },
-                    { new Guid("5cee819a-f78d-49a9-866e-b69aba44c4f4"), "user3@domain.com", 198904208493L },
-                    { new Guid("fbf6dc01-93f9-4772-891f-46e5a79d6e2a"), "user4@domain.com", 198602182748L }
+                    { new Guid("e2c46906-2ea4-4672-a81f-bd69890c9b16"), "user1@domain.com", "199205251045" },
+                    { new Guid("21d937d1-f020-4e4f-9f26-add9801b6e75"), "user2@domain.com", "199307121428" },
+                    { new Guid("5cee819a-f78d-49a9-866e-b69aba44c4f4"), "user3@domain.com", "198904208493" },
+                    { new Guid("fbf6dc01-93f9-4772-891f-46e5a79d6e2a"), "user4@domain.com", "198602182748" }
                 });
 
             migrationBuilder.InsertData(
@@ -123,9 +135,21 @@ namespace CustomerAPI.Migrations
                 column: "CountryId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_Addresses_CustomerId",
+                table: "Addresses",
+                column: "CustomerId",
+                unique: true);
+
+            migrationBuilder.CreateIndex(
                 name: "IX_PhoneNumbers_CountryId",
                 table: "PhoneNumbers",
                 column: "CountryId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_PhoneNumbers_CustomerId",
+                table: "PhoneNumbers",
+                column: "CustomerId",
+                unique: true);
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
@@ -134,13 +158,13 @@ namespace CustomerAPI.Migrations
                 name: "Addresses");
 
             migrationBuilder.DropTable(
-                name: "Customers");
-
-            migrationBuilder.DropTable(
                 name: "PhoneNumbers");
 
             migrationBuilder.DropTable(
                 name: "Countries");
+
+            migrationBuilder.DropTable(
+                name: "Customers");
         }
     }
 }
