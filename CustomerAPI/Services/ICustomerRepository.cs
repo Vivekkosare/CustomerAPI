@@ -17,5 +17,6 @@ namespace CustomerAPI.Services
         void UpdateCustomer(Customer customer);
 
         void DeleteCustomer(Customer customer);
+       // Task<bool> IsValidCountry(string country);
     }
 }

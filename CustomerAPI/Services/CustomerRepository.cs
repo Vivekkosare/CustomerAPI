@@ -112,5 +112,17 @@ namespace CustomerAPI.Services
 
 
         }
+
+        //public async Task<bool> IsValidCountry(string country)
+        //{
+        //    if (country == null)
+        //        throw new ArgumentNullException(nameof(country));
+
+        //    var existingCountry = await _context.Countries.Where(countries => countries.CountryName == country).ToListAsync();
+        //    if (!existingCountry.Any())
+        //        return false;
+        //    else
+        //        return true;
+        //}
     }
 }
