@@ -7,12 +7,14 @@ using CustomerAPI.DBContexts;
 using CustomerAPI.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using Newtonsoft.Json.Serialization;
 
 namespace CustomerAPI
 {
@@ -31,7 +33,16 @@ namespace CustomerAPI
             services.AddControllers(action =>
             {
                 action.ReturnHttpNotAcceptable = true;
-            }).AddXmlDataContractSerializerFormatters();
+            })
+            .AddNewtonsoftJson(setupAction =>
+            {
+                setupAction.SerializerSettings.ContractResolver =
+                new CamelCasePropertyNamesContractResolver();
+            })
+            .AddXmlDataContractSerializerFormatters();
+
+            services.AddLogging(config => config.AddConsole())
+                .Configure<LoggerFilterOptions>(config => config.MinLevel = LogLevel.Debug);
 
             services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
             services.AddScoped<ICustomerRepository, CustomerRepository>();
@@ -47,6 +58,16 @@ namespace CustomerAPI
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
+            }
+            else
+            {
+                app.UseExceptionHandler(appBuilder =>
+                {
+                    appBuilder.Run(async c => {
+                        c.Response.StatusCode = 500;
+                        await c.Response.WriteAsync($"Something happened. Please try again later!!");
+                    });
+                });
             }
 
             app.UseRouting();

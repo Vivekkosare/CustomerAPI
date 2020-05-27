@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 namespace CustomerAPI.Models
 {
     [AddressAttribute]
-    public class CustomerCreateDto
+    public class CustomerCreateUpdateDto
     {
         [Required(ErrorMessage = "Personal number cannot be empty")]
         [MaxLength(12, ErrorMessage = "Max length should be 12")]
@@ -18,7 +18,7 @@ namespace CustomerAPI.Models
         [Required(ErrorMessage = "Email cannot be empty")]
         [EmailAddress(ErrorMessage = "Invalid Email ID")]
         public string Email { get; set; }
-        public CustomerAddressCreateDto Address { get; set; }
+        public CustomerAddressCreateUpdateDto Address { get; set; }
 
         [Required(ErrorMessage = "Phone number cannot be empty")]
         [MinLength(8, ErrorMessage = "Minimum 8 digits should be entered")]
