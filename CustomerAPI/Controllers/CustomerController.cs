@@ -74,8 +74,8 @@ namespace CustomerAPI.Controllers
             _logger.LogInformation("Updating a customer");
 
             _mapper.Map(customerDto, customer);
-
             _customerRepository.UpdateCustomer(customer);
+
             return Ok();
         }
 
@@ -96,6 +96,7 @@ namespace CustomerAPI.Controllers
 
             _mapper.Map(customerToPatch, customer);
             _customerRepository.UpdateCustomer(customer);
+
             return Ok();
         }
 
@@ -105,6 +106,8 @@ namespace CustomerAPI.Controllers
             var customer = _customerRepository.GetCustomer(customerId).Result;
             if (customer == null)
                 return NotFound();
+
+            _logger.LogInformation("Deleting a customer");
 
             _customerRepository.DeleteCustomer(customer);
 

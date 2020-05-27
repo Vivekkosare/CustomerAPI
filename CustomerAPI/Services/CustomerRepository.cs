@@ -3,6 +3,7 @@ using CustomerAPI.Entities;
 using CustomerAPI.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,9 +16,11 @@ namespace CustomerAPI.Services
     public class CustomerRepository : ICustomerRepository
     {
         private readonly CustomerContext _context;
-        public CustomerRepository(CustomerContext context)
+        private readonly ILogger _logger;
+        public CustomerRepository(CustomerContext context, ILogger logger)
         {
             _context = context ?? throw new ArgumentNullException(nameof(context));
+            _logger = logger ?? throw new ArgumentNullException(nameof(logger));
         }
         public async void CreateCustomer(Customer customer)
         {
@@ -32,12 +35,15 @@ namespace CustomerAPI.Services
 
             await _context.Customers.AddAsync(customer);
             _context.SaveChanges();
+
+            _logger.LogInformation("Customer added successfully");
         }
 
         public void DeleteCustomer(Customer customer)
         {
             _context.Customers.Remove(customer);
             _context.SaveChanges();
+            _logger.LogInformation("Customer deleted successfully");
         }
 
         public async Task<Customer> GetCustomer(Guid customerId)
@@ -61,6 +67,8 @@ namespace CustomerAPI.Services
                                       PersonalNumber = cust.PersonalNumber
                                   }).Where(customer => customer.CustomerId == customerId).FirstOrDefaultAsync();
 
+            _logger.LogInformation("Customer fetched successfully");
+
             return customer ?? throw new ArgumentNullException(nameof(customer));
         }
 
@@ -82,6 +90,8 @@ namespace CustomerAPI.Services
                                        PersonalNumber = cust.PersonalNumber
                                    }).ToListAsync<Customer>();
 
+            _logger.LogInformation("Customers fetched successfully");
+
             return customers ?? throw new ArgumentNullException(nameof(customers));
         }
 
@@ -90,6 +100,7 @@ namespace CustomerAPI.Services
         {
             _context.Customers.Update(customer);
             _context.SaveChanges();
+            _logger.LogInformation("Customer updated successfully");
         }
     }
 }
