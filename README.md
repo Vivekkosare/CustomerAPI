@@ -1,5 +1,6 @@
 # CustomerAPI
 .Net core Rest API for Customer CRUD operation
+
 #To run the project
 1.Open command prompt, run command
   cd "project path"
