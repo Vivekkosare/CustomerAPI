@@ -7,7 +7,7 @@
   cd "project path"
   
 2. Run command
-  dotnet run
+  "dotnet run"
   
 3. In command prompt, it will display the port on which the API is running.
 4. Open a browser and navigate to http://localhost:5000/swagger/index.html
