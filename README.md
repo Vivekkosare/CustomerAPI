@@ -32,7 +32,7 @@ CRUD Operations steps for Customer
 --------------------
 Method: GET
 
-Url: http://localhost:65000/api/customers/
+Url: http://localhost:5000/api/customers/
 
 Headers:
 Accept: application/json
@@ -44,7 +44,7 @@ Response Status: 200 OK
 --------------------
 Method: GET
 
-Url: http://localhost:65000/api/customers/e2c46906-2ea4-4672-a81f-bd69890c9b16
+Url: http://localhost:5000/api/customers/e2c46906-2ea4-4672-a81f-bd69890c9b16
 
 Headers:
 Accept: application/json
@@ -56,7 +56,7 @@ Response Status: 200 OK
 --------------------
 Method: POST
 
-Url: http://localhost:65000/api/customers/
+Url: http://localhost:5000/api/customers/
 
 Headers:
 Accept: application/json
@@ -81,7 +81,7 @@ Response Status: 201 Created
 --------------------
 Method: PUT
 
-Url: http://localhost:65000/api/customers/e2c46906-2ea4-4672-a81f-bd69890c9b16
+Url: http://localhost:5000/api/customers/e2c46906-2ea4-4672-a81f-bd69890c9b16
 
 Headers:
 Accept: application/json
@@ -106,7 +106,7 @@ Response Status: 200 OK
 
 Method: PATCH
 
-Url: http://localhost:65000/api/customers/e2c46906-2ea4-4672-a81f-bd69890c9b16
+Url: http://localhost:5000/api/customers/e2c46906-2ea4-4672-a81f-bd69890c9b16
 
 Headers:
 Content-Type:application/json-patch+json
@@ -167,7 +167,7 @@ Response Status: 200 OK
 
 Method: DELETE
 
-Url: http://localhost:65000/api/customers/e2c46906-2ea4-4672-a81f-bd69890c9b16
+Url: http://localhost:5000/api/customers/e2c46906-2ea4-4672-a81f-bd69890c9b16
 
 Headers:
 Content-Type:application/json
