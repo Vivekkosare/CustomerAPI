@@ -1,5 +1,5 @@
 # CustomerAPI
-.Net core Rest API for Customer CRUD operation
+Customer CRUD operation Rest API developed using Asp.Net Core and Entity Framework Core
 
 #To run the project
 
