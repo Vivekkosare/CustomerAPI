@@ -52,7 +52,7 @@ namespace CustomerAPI.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult<CustomerDto>> CreateCustomer([FromBody] CustomerCreateUpdateDto customer)
+        public async Task<ActionResult<CustomerDto>> CreateCustomer([FromBody] CustomerCreateDto customer)
         {
             var customerEntity = _mapper.Map<Customer>(customer);
             _customerRepository.CreateCustomer(customerEntity);
@@ -65,7 +65,7 @@ namespace CustomerAPI.Controllers
         }
 
         [HttpPut("{customerId}")]
-        public ActionResult UpdateCustomer(Guid customerId, [FromBody] CustomerCreateUpdateDto customerDto)
+        public ActionResult UpdateCustomer(Guid customerId, [FromBody] CustomerUpdateDto customerDto)
         {
             var customer = _customerRepository.GetCustomer(customerId).Result;
             if (customer == null)
@@ -80,7 +80,7 @@ namespace CustomerAPI.Controllers
         }
 
         [HttpPatch("{customerId}")]
-        public ActionResult PartialUpdateCustomer(Guid customerId, [FromBody] JsonPatchDocument<CustomerCreateUpdateDto> customerPatchDocument)
+        public ActionResult PartialUpdateCustomer(Guid customerId, [FromBody] JsonPatchDocument<CustomerUpdateDto> customerPatchDocument)
         {
             var customer = _customerRepository.GetCustomer(customerId).Result;
             if (customer == null)
@@ -88,7 +88,7 @@ namespace CustomerAPI.Controllers
 
             _logger.LogInformation("Partially updating a customer");
 
-            var customerToPatch = _mapper.Map<CustomerCreateUpdateDto>(customer);
+            var customerToPatch = _mapper.Map<CustomerUpdateDto>(customer);
             customerPatchDocument.ApplyTo(customerToPatch);
 
             if (!TryValidateModel(customerToPatch))

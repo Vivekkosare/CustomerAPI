@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 namespace CustomerAPI.Models
 {
     
-    public class CustomerAddressCreateUpdateDto
+    public class CustomerAddressCreateDto
     {
         [Required(ErrorMessage = "Zipcode cannot be empty")]        
         public int ZipCode { get; set; }

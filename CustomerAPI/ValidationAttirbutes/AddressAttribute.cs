@@ -14,7 +14,7 @@ namespace CustomerAPI.ValidationAttirbutes
         {
             //  return base.IsValid(value, validationContext);
 
-            var customerCreateDto = (CustomerCreateUpdateDto)validationContext.ObjectInstance;
+            var customerCreateDto = (CustomerCreateDto)validationContext.ObjectInstance;
 
             var personalNumber = customerCreateDto.PersonalNumber;
             if (personalNumber.Length != 10 && personalNumber.Length != 12)
