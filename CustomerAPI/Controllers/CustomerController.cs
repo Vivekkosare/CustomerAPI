@@ -19,8 +19,8 @@ namespace CustomerAPI.Controllers
     {
         private readonly ICustomerRepository _customerRepository;
         private readonly IMapper _mapper;
-        private readonly ILogger _logger;
-        public CustomerController(ICustomerRepository customerRepository, IMapper mapper, ILogger logger)
+        ILogger<CustomerController> _logger = null;
+        public CustomerController(ICustomerRepository customerRepository, IMapper mapper, ILogger<CustomerController> logger)
         {
             _customerRepository = customerRepository ?? throw new ArgumentNullException(nameof(customerRepository));
             _mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));

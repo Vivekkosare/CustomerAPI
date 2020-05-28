@@ -41,8 +41,9 @@ namespace CustomerAPI
             })
             .AddXmlDataContractSerializerFormatters();
 
-            services.AddLogging(config => config.AddConsole())
+            services.AddLogging(config => { config.AddConsole();config.AddDebug(); })
                 .Configure<LoggerFilterOptions>(config => config.MinLevel = LogLevel.Debug);
+
 
             services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
             services.AddScoped<ICustomerRepository, CustomerRepository>();

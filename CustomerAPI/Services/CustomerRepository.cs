@@ -16,8 +16,9 @@ namespace CustomerAPI.Services
     public class CustomerRepository : ICustomerRepository
     {
         private readonly CustomerContext _context;
-        private readonly ILogger _logger;
-        public CustomerRepository(CustomerContext context, ILogger logger)
+         private readonly ILogger<CustomerRepository> _logger;
+        //  public CustomerRepository(CustomerContext context, ILogger logger)
+        public CustomerRepository(CustomerContext context, ILogger<CustomerRepository> logger)
         {
             _context = context ?? throw new ArgumentNullException(nameof(context));
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
