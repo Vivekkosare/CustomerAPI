@@ -18,6 +18,8 @@ Fundamentals used in this project:
 1. SOLID principles
 2. Mapping using Automapper
 3. API documentation using Swagger/OpenAPI 
+4. Data model validations using data annotations and custom validators
+5. Support for XML content type along with JSON.
 
 Fundamentals to be implemented (In progress)
 1. Push notifications
